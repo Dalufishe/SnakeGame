@@ -19,9 +19,18 @@ body {
   height: 100vh;
 }
 #page #root {
-  width: 60vh;
-  height: 60vh;
-  background-color: green;
+  width: 65vh;
+  height: 65vh;
+  position: relative;
+}
+#page #root:before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background-color: darkgreen;
+  background-size: 100% 100%;
 }
 #page #root .row {
   display: flex;
@@ -38,9 +47,12 @@ body {
 #page #root .drop {
   background-color: coral;
 }
+#page #root .lose {
+  background-color: blue;
+}
 #page #left-box {
   width: 30vh;
-  height: 60vh;
+  height: 65vh;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
@@ -50,7 +62,7 @@ body {
   background-color: darkgreen;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
   width: 100%;
-  height: 45vh;
+  height: 55.25vh;
   border: 1.5px solid greenyellow;
 }
 #page #left-box #state-box #score {
@@ -65,10 +77,35 @@ body {
   align-items: center;
   color: greenyellow;
 }
+#page #left-box #state-box #level {
+  width: 85%;
+  height: 6vh;
+  margin: 0 auto;
+  margin-top: 4vh;
+  border: 1.5px solid greenyellow;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: greenyellow;
+}
+#page #left-box #state-box #history {
+  width: 85%;
+  height: 19.5vh;
+  margin: 0 auto;
+  margin-top: 4vh;
+  border: 1.5px solid greenyellow;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: greenyellow;
+  overflow: auto;
+}
 #page #left-box #config-box {
   background-color: darkgreen;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
   width: 100%;
-  height: 9vh;
+  height: 6.5vh;
   border: 1.5px solid greenyellow;
 }/*# sourceMappingURL=index.css.map */

@@ -2,17 +2,17 @@
 import Game from "../core/index.js"
 //$ config 
 const GAME_CONFIG = {
-    width: 13,
-    height: 13,
-    positionX: 6,
-    positionY: 6,
+    width: 33,
+    height: 33,
+    positionX: 8,
+    positionY: 8,
     speed: 200,
     dropSpeed: 500,
     keys: {
-        up: ["w", "W", "ArrowUp"],
-        down: ["s", "S", "ArrowDown"],
-        left: ["a", "A", "ArrowLeft"],
-        right: ["d", "D", "ArrowRight"]
+        up: ["w", "W", "ArrowUp", "k"],
+        down: ["s", "S", "ArrowDown", "j"],
+        left: ["a", "A", "ArrowLeft", "h"],
+        right: ["d", "D", "ArrowRight", "l"]
     }
 }
 
@@ -31,6 +31,7 @@ const game = Game.init({
 //* display
 // root
 const root = $("#root");
+const history = window.localStorage.getItem("history") || "";
 
 for (let i = 0; i < GAME_CONFIG.height; i++) {
     // row
@@ -55,11 +56,15 @@ for (let i = 0; i < GAME_CONFIG.height; i++) {
     // init-snake
     $(".block").removeClass("snake");
     $("#block_" + game.snake.head).addClass("snake")
-    $("#score").html(`
-        <h1>
-        ${game.score}
-        </h1>
-        `)
+
+}
+
+$("#score h3").text(`${game.score}`)
+$("#level h4").text(`Lv ${game.level}`)
+
+//history
+for (let i of history?.split("-").slice(0, history.split("-").length - 1)) {
+    $("#history ul").append(`<li>${i}</li>`)
 }
 
 game.register({
@@ -69,29 +74,32 @@ game.register({
         $(".block").removeClass("drop");
         $(".block").removeClass("head");
 
-        //* display
+        //* display 
+        // snake
         game.snake.entire.forEach(s => {
             $("#block_" + s).addClass("snake")
         })
-
+        // head
         $("#block_" + game.snake.head).addClass("head")
 
-        $("#score").html(`
-        <h1>
-        ${game.score}
-        </h1>
-        `);
+        // score && level
+        $("#score h3").text(`${game.score}`);
+        $("#level h4").text(`Lv ${game.level}`)
 
+        // drops
         game.drops.forEach(drop => {
             $("#block_" + drop).addClass("drop")
         })
     },
-    endCallback: () => {
-        $("#score").html(`
-        <h1>
-            You Lose
-        <h1>`)
+    endCallback: (game) => {
+        // $("#score h3").text(`You Lose`)
+        $(".block").removeClass("head");
+        $("#block_" + game.snake.head).addClass("lose")
+        $("#score h3").text(`${game.score}`)
+        $("#level h4").text(`Lv ${game.level}`)
 
+        // set history
+        window.localStorage.setItem("history", history + `${game.score}-`)
     }
 })
 

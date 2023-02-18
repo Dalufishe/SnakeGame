@@ -1,6 +1,6 @@
 export default class Game {
     /**
-     * Copyright 2022 The SnakeGame Authors. All Rights Reserved.
+     * Copyright 2023 The SnakeGame Authors. All Rights Reserved.
      * 
      * 貪吃蛇函式庫 by Dalufishe
      * 
@@ -33,10 +33,13 @@ export default class Game {
         this.speed = speed;
         this.dropSpeed = dropSpeed;
         this.keys = keys;
-        this.move = "LEFT";
+        this.move = ["UP", "LEFT", "DOWN", "RIGHT"][Math.floor(Math.random() * 4)] // the move which is going to be
+        this.lastMove = null; // last move
         this.score = 0;
+        this.level = 1;
         this.move_loop_itv;
         this.drop_loop_itv;
+        this.startTime = null;
         //* register event listener
         document.addEventListener("keydown", (evt) => {
             const up = this.keys.up || ["w", "W"];
@@ -46,27 +49,35 @@ export default class Game {
             if (Array.isArray(up)) {
                 for (let key of up) {
                     if (evt.key === key) {
-                        //* set "UP"
-                        this.move = "UP";
+                        //* set "UP" (cant return)
+                        if (this.lastMove != "DOWN" || this.snake.length === 1) {
+                            this.move = "UP"
+                        }
                     }
                 }
             } else {
                 if (evt.key === up) {
                     //* set "UP"
-                    this.move = "UP";
+                    if (this.lastMove != "DOWN" || this.snake.length === 1) {
+                        this.move = "UP"
+                    }
                 }
             }
             if (Array.isArray(down)) {
                 for (let key of down) {
                     if (evt.key === key) {
                         //* set "DONW"
-                        this.move = "DOWN";
+                        if (this.lastMove != "UP" || this.snake.length === 1) {
+                            this.move = "DOWN"
+                        }
                     }
                 }
             } else {
                 if (evt.key === down) {
                     //* set "DONW"
-                    this.move = "DOWN";
+                    if (this.lastMove != "UP" || this.snake.length === 1) {
+                        this.move = "DOWN"
+                    }
                 }
             }
 
@@ -74,13 +85,17 @@ export default class Game {
                 for (let key of left) {
                     if (evt.key === key) {
                         //* set "LEFT"
-                        this.move = "LEFT";
+                        if (this.lastMove != "RIGHT" || this.snake.length === 1) {
+                            this.move = "LEFT"
+                        }
                     }
                 }
             } else {
                 if (evt.key === left) {
                     //* set "LEFT"
-                    this.move = "LEFT";
+                    if (this.lastMove != "RIGHT" || this.snake.length === 1) {
+                        this.move = "LEFT"
+                    }
                 }
             }
 
@@ -88,14 +103,17 @@ export default class Game {
                 for (let key of right) {
                     if (evt.key === key) {
                         //* set "RIGHT"
-                        this.move = "RIGHT";
+                        if (this.lastMove != "LEFT" || this.snake.length === 1) {
+                            this.move = "RIGHT"
+                        }
                     }
                 }
             } else {
                 if (evt.key === right) {
                     //* set "RIGHT"
-                    this.move = "RIGHT";
-
+                    if (this.lastMove != "LEFT" || this.snake.length === 1) {
+                        this.move = "RIGHT"
+                    }
                 }
             }
         })
@@ -115,6 +133,7 @@ export default class Game {
         this.snake.head = head
         this.snake.body = body
         this.snake.entire = [...body, head]
+        this.snake.length = this.snake.entire.length
     }
     //* set drop
     setDrop(drop) {
@@ -132,25 +151,25 @@ export default class Game {
                 this.positionY -= 1
                 this.setSnake(`${this.positionX}_${this.positionY}`,
                     this.snake.entire.slice(1))
-
+                this.lastMove = "UP";
                 break
             case "DOWN":
                 this.positionY += 1
                 this.setSnake(`${this.positionX}_${this.positionY}`,
                     this.snake.entire.slice(1))
-
+                this.lastMove = "DOWN"
                 break
             case "LEFT":
                 this.positionX -= 1
                 this.setSnake(`${this.positionX}_${this.positionY}`,
                     this.snake.entire.slice(1))
-
+                this.lastMove = "LEFT"
                 break
             case "RIGHT":
                 this.positionX += 1
                 this.setSnake(`${this.positionX}_${this.positionY}`,
                     this.snake.entire.slice(1))
-
+                this.lastMove = "RIGHT"
                 break
             default:
                 break
@@ -165,7 +184,7 @@ export default class Game {
             this.positionY > this.height - 1 ||
             this.positionX < 0 ||
             this.positionX > this.width - 1) {
-            this.end();
+            this.end(true);
             return
         }
 
@@ -188,19 +207,30 @@ export default class Game {
         const randomPosition = ramdomX + "_" + ramdomY
         this.setDrop(randomPosition)
     }
-    start() {
+    start(initSpeed = this.speed) {
         // init
-        const startTime = Date.now();
+        this.startTime = this.startTime || Date.now();
 
         // loops
         // move-loop
         this.move_loop_itv = setInterval(() => {
             // score count
-            this.score = ((Date.now() - startTime) * 9 / 100).toFixed(0)
+            this.score = ((Date.now() - this.startTime) * 9 / 100).toFixed(0)
+            // level count
+            const oldLevel = this.level;
+            this.level = Number(Math.floor((this.score / 1000)).toFixed(0)) + 1
+            // speed up
+            const oldSpeed = this.speed
+            this.speed = this.speed * (2 * (oldLevel - this.level) + 11) / 11
+            if (oldSpeed != this.speed) {
+                console.log(this.speed)
+                this.end(false);
+                this.start(this.speed);
+            }
 
             // move snake
             this.handleMove(this.moveCallback);
-        }, this.speed)
+        }, initSpeed)
 
         // drop-loop
         this.drop_loop_itv = setInterval(() => {
@@ -208,14 +238,11 @@ export default class Game {
         }, this.dropSpeed)
     }
 
-    end() {
+    end(shouldCb) {
         clearInterval(this.move_loop_itv)
         clearInterval(this.drop_loop_itv)
-        if (this.endCallback) {
-            this.endCallback()
-        }
-        else {
-            throw new Error("end game");
+        if (this.endCallback && shouldCb) {
+            this.endCallback(this)
         }
     }
 }

@@ -19,9 +19,21 @@ body {
   height: 100vh;
 
   #root {
-    width: 60vh;
-    height: 60vh;
-    background-color: green;
+    width: 65vh;
+    height: 65vh;
+    position: relative;
+
+    &:before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background-color: darkgreen;
+      // background: url("../imgs/shit.jpg") 0 0 repeat;
+      background-size: 100% 100%;
+    }
+
     .row {
       display: flex;
     }
@@ -32,16 +44,19 @@ body {
       background-color: purple;
     }
     .head {
-        background-color: red;
+      background-color: red;
     }
     .drop {
       background-color: coral;
+    }
+    .lose {
+      background-color: blue;
     }
   }
 
   #left-box {
     width: 30vh;
-    height: 60vh;
+    height: 65vh;
     display: flex;
     justify-content: space-between;
     flex-direction: column;
@@ -53,7 +68,7 @@ body {
         rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
         rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
       width: 100%;
-      height: calc(7.5 / 10 * 60vh);
+      height: calc(8.5 / 10 * 65vh);
       border: 1.5px solid greenyellow;
       #score {
         width: 85%;
@@ -67,6 +82,31 @@ body {
         align-items: center;
         color: greenyellow;
       }
+      #level {
+        width: 85%;
+        height: calc(1 / 10 * 60vh);
+        margin: 0 auto;
+        margin-top: calc(1 / 15 * 60vh);
+        border: 1.5px solid greenyellow;
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: greenyellow;
+      }
+      #history {
+        width: 85%;
+        height: calc(3 / 10 * 65vh);
+        margin: 0 auto;
+        margin-top: calc(1 / 15 * 60vh);
+        border: 1.5px solid greenyellow;
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: greenyellow;
+        overflow: auto;
+      }
     }
     #config-box {
       background-color: darkgreen;
@@ -74,7 +114,7 @@ body {
         rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
         rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
       width: 100%;
-      height: calc(1.5 / 10 * 60vh);
+      height: calc(1 / 10 * 65vh);
       border: 1.5px solid greenyellow;
     }
   }
