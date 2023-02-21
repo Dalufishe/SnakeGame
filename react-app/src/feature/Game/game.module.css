@@ -1,0 +1,25 @@
+.game {
+  width: 80vh;
+  height: 80vh;
+  background-image: url("../../assets/bg/bg1.png");
+  background-size: 100% 100%;
+  border: 1.5px solid lightgreen;
+}
+.row {
+  display: flex;
+}
+.block {
+  border: 1.5px solid greenyellow;
+}
+.snake {
+  background-color: purple !important;
+}
+.head {
+  background-color: red !important;
+}
+.drop {
+  background-color: orange;
+}
+.lose {
+  background-color: blue !important;
+}
