@@ -1,7 +1,7 @@
 
 import React from 'react'
 import { makeStyles } from "@mui/styles"
-import { Grid, Stack } from "@mui/material"
+import { Box, Grid, Stack } from "@mui/material"
 import Game from './feature/Game/Game';
 import Topbar from './layout/Topbar';
 import Content from './layout/Content/Content';
@@ -31,7 +31,11 @@ export default function App() {
         </Content>
         {/* rightbar */}
         <Rightbar>
-          <Stack width="100%" justifyContent="flex-start" alignItems="center">
+          <Stack
+            width="100%"
+            height="100%"
+            overflow="hidden"
+            justifyContent="flex-start" alignItems="center">
             <Statebar />
             <StartGame />
             <Historybar />

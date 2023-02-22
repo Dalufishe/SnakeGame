@@ -19,7 +19,7 @@ const useStyles = makeStyles({
 
 function Statebar(props) {
   const styles = useStyles();
-  const { gameData } = props;
+  const game  = props.gameData.game;
   return (
     <Stack className={styles.statebar}>
       <Titlebar height="6vh">
@@ -40,11 +40,11 @@ function Statebar(props) {
               variant="h3"
               align="center"
               color={
-                Number(gameData.game.score) % 1000 > 850 ? "orange" : "yellow"
+                Number(game.score) % 1000 > 850 ? "orange" : "yellow"
               }
               fontFamily="inherit"
             >
-              {gameData.game.score}
+              {game.score}
             </Typography>
           </Stack>
         </Grid>
@@ -56,7 +56,7 @@ function Statebar(props) {
               color="greenyellow"
               fontFamily="inherit"
             >
-              Level {gameData.game.level}
+              Level {game.level}
             </Typography>
             <Box borderTop="1.5px solid lightgreen"></Box>
             <Typography
@@ -65,7 +65,7 @@ function Statebar(props) {
               color="greenyellow"
               fontFamily="inherit"
             >
-              Speed {gameData.game.speed?.toFixed(0)}
+              Speed {(200 / game.speed)?.toFixed(1)}x
             </Typography>
           </Stack>
         </Grid>
@@ -77,7 +77,7 @@ function Statebar(props) {
               color="greenyellow"
               fontFamily="inherit"
             >
-              {"(" + gameData.game.snake?.head.replace("_", " , ") + ")"}
+              {"(" + game.snake?.head.replace("_", " , ") + ")"}
             </Typography>
             <Box borderTop="1.5px solid lightgreen"></Box>
             <Typography
@@ -86,8 +86,8 @@ function Statebar(props) {
               color="greenyellow"
               fontFamily="inherit"
             >
-              {gameData.game.snake?.length}{" "}
-              {gameData.game.snake?.length === 1 ? "snk" : "snks"}
+              {game.snake?.length}{" "}
+              {game.snake?.length === 1 ? "snk" : "snks"}
             </Typography>
           </Stack>
         </Grid>

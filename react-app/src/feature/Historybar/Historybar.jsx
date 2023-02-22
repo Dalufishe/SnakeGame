@@ -22,11 +22,14 @@ const useStyles = makeStyles({
 function Historybar(props) {
   const styles = useStyles();
   const history = props.HistoryGameData.history;
+  
   const handleBestScore = (history) => {
-    let highest = -Infinity;
+    let highest = 0;
+    console.log(history)
+    
     for (let record of history) {
-      if (record.score > highest) {
-        highest = record.score;
+      if (Number(record.score) > highest) {
+        highest = Number(record.score);
       }
     }
     return highest;
@@ -56,7 +59,7 @@ function Historybar(props) {
           </Stack>
         </Grid>
         <Grid item xs={8} className={styles.historybox}>
-          <Stack height="100%" gap={3} justifyContent="flex-start">
+          <Stack height="100%" gap={4} justifyContent="flex-start">
             {history.map((item) => (
               <Typography
                 key={item._id}
